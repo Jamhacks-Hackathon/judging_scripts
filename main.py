@@ -43,13 +43,13 @@ def generate_judging_schedule(input_csv_path, output_dir="judging_schedules"):
 
     # Define sponsor categories and rooms
     # Multiple rooms for general judging
-    general_rooms = ["2462", "2458", "2456", "2454"]
+    general_rooms = ["2nd floor Ideas clinic", "2462", "2462", "2458", "2456", "2454"]
 
     sponsor_categories = [
         {"name": "General", "rooms": general_rooms, "duration_minutes": 8},
         {
             "name": "MLH",
-            "room": "2nd floor Idea's clinic",
+            "room": "1st floor Idea's clinic",
             "duration_minutes": 3,
             "subcategories": [
                 "Best .Tech Domain Name",
@@ -57,9 +57,9 @@ def generate_judging_schedule(input_csv_path, output_dir="judging_schedules"):
                 "Best Use of GenAI",
             ],
         },
-        {"name": "Pico-Best 8 Prize", "room": "2410", "duration_minutes": 3},
-        {"name": "Best hackathon tool", "room": "2420", "duration_minutes": 3},
-        {"name": "Best dev tool", "room": "2430", "duration_minutes": 3},
+        {"name": "Pico-Best 8 Prize", "room": "1st floor Idea's clinic", "duration_minutes": 3},
+        {"name": "Best hackathon tool", "room": "1st floor Idea's clinic", "duration_minutes": 3},
+        {"name": "Best dev tool", "room": "1st floor Idea's clinic", "duration_minutes": 3},
     ]
 
     # Create mapping of category to room and duration
@@ -352,5 +352,5 @@ def generate_judging_schedule(input_csv_path, output_dir="judging_schedules"):
 
 if __name__ == "__main__":
     # Replace with actual path to your CSV file
-    input_csv_path = "buidl_export6.csv"
+    input_csv_path = "buidl_export(6).csv"
     generate_judging_schedule(input_csv_path)
