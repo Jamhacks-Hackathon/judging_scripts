@@ -3,7 +3,287 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
-        <entry key="/scheduler/buidl_export.csv">
+        <entry key="/Enhanced_MLH_Schedule.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/buidl_export(2).csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/buidl_export(4).csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/buidl_export(5).csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/buidl_export(6).csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/buidl_export(7).csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/buidl_export(8).csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/buidl_export.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/example.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/judging_schedules/1st_floor_Idea's_clinic_judging.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/judging_schedules/1st_floor_Ideas_clinic_Best_Developer_Tool_by_Warp_judging.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/judging_schedules/1st_floor_Ideas_clinic_MLH__Best_.Tech_Domain_Name_judging.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/judging_schedules/1st_floor_Ideas_clinic_judging.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/judging_schedules/2410_Best_Pico-8_Prize_Track_by_Pex_Labs_judging.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/judging_schedules/2410_judging.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/judging_schedules/2420_Hackathon_Tool_Prize_Track_by_Hack_Canada_judging.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/judging_schedules/2420_judging.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/judging_schedules/2430_Best_Developer_Tool_by_Warp_judging.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/judging_schedules/2430_judging.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/judging_schedules/2440_Best_Beginner_Hack_judging.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/judging_schedules/2450_Best_Solo_Hack_judging.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/judging_schedules/2nd_floor_Idea's_clinic_judging.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/judging_schedules/2nd_floor_Ideas_clinic_Hackathon_Tool_Prize_Track_by_Hack_Canada_judging.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/judging_schedules/2nd_floor_Ideas_clinic_MLH__Best_.Tech_Domain_Name_judging.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/judging_schedules/2nd_floor_Ideas_clinic_MLH_judging.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/judging_schedules/2st_floor_Ideas_clinic_Best_Pico-8_Prize_Track_by_Pex_Labs_judging.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/judging_schedules/Room_2454_judging.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/judging_schedules/Room_2456_judging.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/judging_schedules/Room_2458_judging.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/judging_schedules/Room_2462_judging.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/judging_schedules/Room_2464_judging.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/judging_schedules/Room_2nd floor Idea's clinic_judging.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/judging_schedules/Room_2nd floor Ideas clinic_judging.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/judging_schedules/Room_2nd_floor_Ideas_clinic_judging.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/judging_schedules/Room_A_judging.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/judging_schedules/TBD_Best_Beginner_Hack_judging.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/judging_schedules/TBD_Best_Female_Hack_judging.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/judging_schedules/TBD_Best_Hardware_Hack_judging.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/judging_schedules/master_schedule.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/mlh.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/schedule.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -52,6 +332,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/schedules/&quot;SPUR Innovation Fund: Best Use of AI_schedule.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/schedules/&quot;Warp Raffle_schedule.csv">
           <value>
             <Attribute>
@@ -66,7 +353,21 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/schedules/Best Cybersecurity Hack&quot;_schedule.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/schedules/Best High School Hack_schedule.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/schedules/Best ICP Hack_schedule.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -87,6 +388,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/schedules/Best Overall Hack_schedule.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/schedules/Best Solo Hack&quot;_schedule.csv">
           <value>
             <Attribute>
@@ -95,6 +403,20 @@
           </value>
         </entry>
         <entry key="/schedules/Best Solo Hack_schedule.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/schedules/Judging_Room_1_2464_schedule.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/schedules/Judging_Room_1_2464_scorecard.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -214,6 +536,13 @@
           </value>
         </entry>
         <entry key="/schedules/team_schedule.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/schedules/teams_schedule.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

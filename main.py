@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 import csv
 import os
 
+# Define non-sponsor categories to be judged during general judging
 NONSPONSOR_CATEGORIES = ["Best Beginner Hack", "Best Solo Hack", "Best Female Hack"]
 
 def generate_judging_schedule(input_csv_path, output_dir='judging_schedules'):
@@ -40,9 +41,10 @@ def generate_judging_schedule(input_csv_path, output_dir='judging_schedules'):
         
         teams.append(team_info)
     
+    # Define MLH categories and search terms
+    mlh_keywords = ["MLH", ".Tech", "MongoDB", "Gen AI"]
+    
     # Define the exact sponsor categories as provided
-    # For normalization, we'll strip quotes from the category names
-    # and create a list of canonical names to avoid duplicates
     all_category_names = [
         'Best Developer Tool by Warp',
         'MLH || Best .Tech Domain Name',
@@ -60,12 +62,13 @@ def generate_judging_schedule(input_csv_path, output_dir='judging_schedules'):
     for team in teams:
         team['categories'] = [normalize_category(cat) for cat in team['categories']]
     
+    # Print debug info
+    print(f"Total teams: {len(teams)}")
+    
     # Define rooms for the canonical categories
     category_rooms = {
         'General': {"rooms": ["2nd floor Idea's clinic", "2464", "2462", "2458", "2456", "2454"], "duration_minutes": 8},
-        'MLH || Best .Tech Domain Name': {"room": "2nd floor Idea's clinic", "duration_minutes": 3},
-        'MLH || Best Use of Gen AI': {"room": "2nd floor Idea's clinic", "duration_minutes": 3},
-        'MLH || Best Use of MongoDB Atlas': {"room": "2nd floor Idea's clinic", "duration_minutes": 3},
+        'MLH': {"room": "2nd floor Idea's clinic", "duration_minutes": 3}, # Using a generic MLH key
         'Best Developer Tool by Warp': {"room": "2430", "duration_minutes": 3},
         'Best Pico-8 Prize Track by Pex Labs': {"room": "2410", "duration_minutes": 3, "delay_minutes": 65},
         'Hackathon Tool Prize Track by Hack Canada': {"room": "2420", "duration_minutes": 3}
@@ -78,9 +81,9 @@ def generate_judging_schedule(input_csv_path, output_dir='judging_schedules'):
         'MLH || Best Use of MongoDB Atlas'
     ]
     
-    # Define start time and end time for judging
-    start_time = datetime.strptime("10:35", "%H:%M")
-    end_time = datetime.strptime("12:15", "%H:%M")
+    # Define start time for judging (soft deadline, will schedule past if needed)
+    start_time = datetime.strptime("x11:05", "%H:%M")
+    target_end_time = datetime.strptime("12:15", "%H:%M")
     
     # Create scheduling data structure
     schedule = {}
@@ -90,11 +93,11 @@ def generate_judging_schedule(input_csv_path, output_dir='judging_schedules'):
         schedule[f"General_{room}"] = []
     
     # Initialize schedules for sponsor categories
+    schedule['MLH'] = []  # Single entry for all MLH categories
+    
     for category in all_category_names:
-        # Skip MLH categories as they'll be handled together
-        if category in mlh_categories[1:]:  # Skip all but the first MLH category
-            continue
-        schedule[category] = []
+        if not category.startswith('MLH ||'):  # Skip individual MLH categories
+            schedule[category] = []
     
     # Schedule general judging first, distributing teams across multiple rooms
     general_rooms = category_rooms['General']["rooms"]
@@ -106,11 +109,7 @@ def generate_judging_schedule(input_csv_path, output_dir='judging_schedules'):
         room = general_rooms[room_idx]
         
         for team in room_teams:
-            # Check if we're exceeding the end time
-            if current_time + timedelta(minutes=8) > end_time:
-                print(f"Warning: Scheduling would exceed end time for team {team['team_id']} in room {room}")
-                continue
-            
+            # No longer checking if exceeding end time - schedule all teams
             schedule[f"General_{room}"].append({
                 "team_id": team["team_id"],
                 "team_name": team["team_name"],
@@ -119,12 +118,97 @@ def generate_judging_schedule(input_csv_path, output_dir='judging_schedules'):
                 "room": room
             })
             current_time += timedelta(minutes=8)
+        
+        # Print info about scheduling exceeding target end time
+        if current_time > target_end_time:
+            print(f"Note: General judging in room {room} extends to {current_time.strftime('%H:%M')}")
     
-    # Schedule sponsor categories individually (except MLH which will be grouped)
+    # Find MLH teams
+    mlh_teams = []
+    
+    # Find teams eligible for any MLH category by checking for MLH keywords in categories
+    for team in teams:
+        is_mlh_team = False
+        team_mlh_categories = []
+        
+        for cat in team['categories']:
+            # Check for MLH exact match
+            if any(mlh_cat in cat for mlh_cat in mlh_categories):
+                is_mlh_team = True
+                team_mlh_categories.append(cat)
+            # Check for MLH || prefix
+            elif "MLH ||" in cat:
+                is_mlh_team = True
+                team_mlh_categories.append(cat)
+            # Check for just "MLH"
+            elif cat.startswith("MLH"):
+                is_mlh_team = True
+                team_mlh_categories.append(cat)
+            # Check for any of the MLH keywords
+            elif any(keyword.lower() in cat.lower() for keyword in mlh_keywords):
+                is_mlh_team = True
+                team_mlh_categories.append(cat)
+        
+        # If no specific MLH categories found but matches keywords, add generic MLH category
+        if is_mlh_team and not team_mlh_categories:
+            team_mlh_categories = ["MLH"]
+        
+        if is_mlh_team:
+            mlh_teams.append({
+                "team": team,
+                "mlh_categories": team_mlh_categories
+            })
+    
+    print(f"MLH teams found: {len(mlh_teams)}")
+    
+    # Schedule all MLH teams
+    mlh_current_time = start_time
+    for mlh_team in mlh_teams:
+        team = mlh_team["team"]
+        team_mlh_categories = mlh_team["mlh_categories"]
+        
+        # Find a time slot that doesn't conflict with the team's other commitments
+        is_conflict = True
+        while is_conflict:
+            is_conflict = False
+            
+            # Check for conflicts with other schedules
+            for category, slots in schedule.items():
+                for slot in slots:
+                    if slot["team_id"] == team["team_id"]:
+                        # Check if current_time overlaps with this slot
+                        slot_end = slot["end_time"]
+                        slot_start = slot["start_time"]
+                        proposed_end = mlh_current_time + timedelta(minutes=3)
+                        
+                        if (slot_start <= mlh_current_time < slot_end) or \
+                                (slot_start < proposed_end <= slot_end) or \
+                                (mlh_current_time <= slot_start and proposed_end >= slot_end):
+                            is_conflict = True
+                            mlh_current_time = slot_end
+                            break
+                if is_conflict:
+                    break
+        
+        # Always schedule, regardless of time
+        schedule['MLH'].append({
+            "team_id": team["team_id"],
+            "team_name": team["team_name"],
+            "start_time": mlh_current_time,
+            "end_time": mlh_current_time + timedelta(minutes=3),
+            "room": category_rooms['MLH']["room"],
+            "mlh_categories": team_mlh_categories
+        })
+        mlh_current_time += timedelta(minutes=3)
+    
+    # Print MLH scheduling info
+    print(f"MLH judging scheduled from {start_time.strftime('%H:%M')} to {mlh_current_time.strftime('%H:%M')}")
+    print(f"Scheduled MLH teams: {len(schedule['MLH'])}")
+    
+    # Schedule other sponsor categories
     for category in all_category_names:
-        # Skip MLH categories after the first one (we'll handle them together)
-        if category in mlh_categories[1:]:
-            continue
+        if category.startswith('MLH ||'):
+            continue  # Skip individual MLH categories as they're handled together
         
         # Get room info and duration
         room_info = category_rooms.get(category, {"room": "TBD", "duration_minutes": 3})
@@ -135,22 +219,21 @@ def generate_judging_schedule(input_csv_path, output_dir='judging_schedules'):
         else:
             current_time = start_time
         
-        # For MLH categories, we'll look for teams that match any MLH category
-        if category == mlh_categories[0]:  # First MLH category
-            eligible_teams = [team for team in teams if any(mlh_cat in team["categories"] for mlh_cat in mlh_categories)]
-        else:
-            eligible_teams = [team for team in teams if category in team["categories"]]
+        eligible_teams = []
+        for team in teams:
+            # Check if team is eligible for this category
+            for cat in team["categories"]:
+                if category.lower() in cat.lower() or category.split(" by ")[0].lower() in cat.lower():
+                    eligible_teams.append(team)
+                    break
+        
+        print(f"Teams for {category}: {len(eligible_teams)}")
         
         for team in eligible_teams:
             # Find a time slot that doesn't conflict with the team's other commitments
             is_conflict = True
             while is_conflict:
                 is_conflict = False
-                
-                # Check if we're exceeding the end time
-                if current_time + timedelta(minutes=room_info["duration_minutes"]) > end_time:
-                    print(f"Warning: Scheduling would exceed end time for team {team['team_id']} in category {category}")
-                    break
                 
                 # Check for conflicts with other schedules
                 for other_category, slots in schedule.items():
@@ -170,37 +253,32 @@ def generate_judging_schedule(input_csv_path, output_dir='judging_schedules'):
                     if is_conflict:
                         break
             
-            # Skip if we couldn't find a slot before the end time
-            if current_time + timedelta(minutes=room_info["duration_minutes"]) > end_time:
-                continue
-            
-            # Add the schedule for this team and category
-            slot_info = {
+            # Always schedule, regardless of time
+            schedule[category].append({
                 "team_id": team["team_id"],
                 "team_name": team["team_name"],
                 "start_time": current_time,
                 "end_time": current_time + timedelta(minutes=room_info["duration_minutes"]),
                 "room": room_info["room"]
-            }
-            
-            # For MLH categories, add which specific MLH categories the team is in
-            if category == mlh_categories[0]:
-                slot_info["mlh_categories"] = [cat for cat in mlh_categories if cat in team["categories"]]
-            
-            schedule[category].append(slot_info)
+            })
             current_time += timedelta(minutes=room_info["duration_minutes"])
+        
+        # Print category scheduling info
+        if eligible_teams:
+            print(f"{category} judging scheduled from {start_time.strftime('%H:%M')} to {current_time.strftime('%H:%M')}")
     
     # Generate CSV for each judging room (for General category)
     for room in general_rooms:
         room_schedule = schedule[f"General_{room}"]
+        room_name = room.replace(" ", "_").replace("/", "_").replace("'", "")
         
-        with open(f'{output_dir}/Room_{room}_judging.csv', 'w', newline='') as csvfile:
+        with open(f'{output_dir}/Room_{room_name}_judging.csv', 'w', newline='') as csvfile:
             fieldnames = ['TIMESLOT', 'TEAM', 'Creativity (/10)', 'Usefulness (/10)',
                           'Presentation (/10)', 'Technical Difficulty (/10)']
             
-            # Add all sponsor categories as columns
-            for sponsor_category in all_category_names:
-                fieldnames.append(f'{sponsor_category} (/10)')
+            # Add non-sponsor categories as columns for general judging
+            for category in NONSPONSOR_CATEGORIES:
+                fieldnames.append(f'{category} (/10)')
             
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
@@ -215,29 +293,52 @@ def generate_judging_schedule(input_csv_path, output_dir='judging_schedules'):
                     'Technical Difficulty (/10)': ''
                 }
                 
-                # Add empty cells for category-specific columns
-                for sponsor_category in all_category_names:
-                    row[f'{sponsor_category} (/10)'] = ''
+                # Add empty cells for non-sponsor category columns
+                for category in NONSPONSOR_CATEGORIES:
+                    row[f'{category} (/10)'] = ''
                 
                 writer.writerow(row)
     
-    # Generate CSV for sponsor categories
+    # Generate CSV for MLH judging
+    with open(f'{output_dir}/2nd_floor_Ideas_clinic_MLH_judging.csv', 'w', newline='') as csvfile:
+        fieldnames = ['TIMESLOT', 'TEAM', 'Creativity (/10)', 'Usefulness (/10)',
+                      'Presentation (/10)', 'Technical Difficulty (/10)']
+        
+        # Add all MLH subcategories as columns
+        for mlh_cat in mlh_categories:
+            fieldnames.append(f'{mlh_cat} (/10)')
+        
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        
+        for slot in sorted(schedule['MLH'], key=lambda x: x["start_time"]):
+            row = {
+                'TIMESLOT': f"{slot['start_time'].strftime('%H:%M')} - {slot['end_time'].strftime('%H:%M')}",
+                'TEAM': f"{slot['team_id']} - {slot['team_name']}",
+                'Creativity (/10)': '',
+                'Usefulness (/10)': '',
+                'Presentation (/10)': '',
+                'Technical Difficulty (/10)': ''
+            }
+            
+            # Add empty cells for all MLH category columns
+            for mlh_cat in mlh_categories:
+                row[f'{mlh_cat} (/10)'] = ''
+            
+            writer.writerow(row)
+    
+    # Generate CSV for other sponsor categories
     for category in all_category_names:
-        # Skip MLH categories after the first one
-        if category in mlh_categories[1:]:
-            continue
+        if category.startswith('MLH ||'):
+            continue  # Skip individual MLH categories as they're handled together
         
         room_info = category_rooms.get(category, {"room": "TBD", "duration_minutes": 3})
         room_name = room_info["room"].replace(" ", "_").replace("/", "_").replace("'", "")
+        category_filename = category.replace(" ", "_").replace("|", "").replace("'", "")
         
-        with open(f'{output_dir}/{room_name}_{category.replace(" ", "_").replace("|", "")}_judging.csv', 'w', newline='') as csvfile:
+        with open(f'{output_dir}/{room_name}_{category_filename}_judging.csv', 'w', newline='') as csvfile:
             fieldnames = ['TIMESLOT', 'TEAM', 'Creativity (/10)', 'Usefulness (/10)',
                           'Presentation (/10)', 'Technical Difficulty (/10)']
-            
-            # For MLH, add all MLH subcategories as columns
-            if category == mlh_categories[0]:
-                for mlh_cat in mlh_categories:
-                    fieldnames.append(f'{mlh_cat} (/10)')
             
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
@@ -251,11 +352,6 @@ def generate_judging_schedule(input_csv_path, output_dir='judging_schedules'):
                     'Presentation (/10)': '',
                     'Technical Difficulty (/10)': ''
                 }
-                
-                # For MLH, add empty cells for all MLH category columns
-                if category == mlh_categories[0]:
-                    for mlh_cat in mlh_categories:
-                        row[f'{mlh_cat} (/10)'] = ''
                 
                 writer.writerow(row)
     
@@ -273,28 +369,35 @@ def generate_judging_schedule(input_csv_path, output_dir='judging_schedules'):
                 'CATEGORY': "General"
             })
     
-    # Add sponsor category slots to master schedule
-    for category in all_category_names:
-        # Skip MLH categories after the first one
-        if category in mlh_categories[1:]:
-            continue
+    # Add MLH judging slots to master schedule
+    for slot in schedule['MLH']:
+        # For MLH, show which specific MLH categories the team is eligible for
+        if "mlh_categories" in slot:
+            specific_categories = ", ".join(slot["mlh_categories"])
+            display_category = f"MLH ({specific_categories})"
+        else:
+            display_category = "MLH"
         
-        room_info = category_rooms.get(category, {"room": "TBD", "duration_minutes": 3})
+        master_schedule.append({
+            'TEAM_ID': slot['team_id'],
+            'TEAM_NAME': slot['team_name'],
+            'TIME': f"{slot['start_time'].strftime('%H:%M')} - {slot['end_time'].strftime('%H:%M')}",
+            'ROOM': slot['room'],
+            'CATEGORY': display_category
+        })
+    
+    # Add other sponsor category slots to master schedule
+    for category in all_category_names:
+        if category.startswith('MLH ||'):
+            continue  # Skip individual MLH categories as they're handled together
         
         for slot in schedule[category]:
-            if category == mlh_categories[0] and "mlh_categories" in slot:
-                # For MLH, show which specific MLH categories the team is eligible for
-                specific_categories = ", ".join(slot["mlh_categories"])
-                display_category = f"MLH ({specific_categories})"
-            else:
-                display_category = category
-            
             master_schedule.append({
                 'TEAM_ID': slot['team_id'],
                 'TEAM_NAME': slot['team_name'],
                 'TIME': f"{slot['start_time'].strftime('%H:%M')} - {slot['end_time'].strftime('%H:%M')}",
                 'ROOM': slot['room'],
-                'CATEGORY': display_category
+                'CATEGORY': category
             })
     
     # Sort master schedule by team and time
