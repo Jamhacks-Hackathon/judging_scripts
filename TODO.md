@@ -1,0 +1,5 @@
+- [ ] Add in a buffer time BETWEEN judging rounds for a hacker team
+- [ ] Better support for configs/one judge to multiple categories
+- [ ] Some way to auto generate google sheets not CSVs (editable)
+  - [ ] A way to UPDATE the google sheet with new data
+- [ ] Consistant hashing so that if i re-run the same data, it will be the same and I can update it.
